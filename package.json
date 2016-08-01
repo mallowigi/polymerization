@@ -1,0 +1,14 @@
+{
+  "name": "polymerization",
+  "version": "1.0.0",
+  "description": "This template is a starting point for building apps using a drawer-based layout.  The layout is provided by `app-layout` elements.",
+  "main": "service-worker.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "polymer serve"
+  },
+  "author": "",
+  "license": "ISC"
+}
