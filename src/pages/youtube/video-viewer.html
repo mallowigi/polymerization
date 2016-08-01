@@ -1,0 +1,56 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-styles/color.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-toggle-button/paper-toggle-button.html">
+
+<link rel="import" href="../../../bower_components/app-route/app-route.html">
+
+<dom-module id="video-viewer">
+    <template>
+        <style>
+            :host {
+                display: block;
+                position: relative;
+                height: calc(100vh - 60px);
+                --primary-color: var(--paper-red-500);
+                --primary-text-color: #fff;
+                --paper-toggle-button-unchecked-bar-color: #888;
+            }
+            paper-input {
+                width: 100px;
+            }
+            #controls {
+                color: #fff;
+                @apply(--layout-vertical);
+                @apply(--layout-center-center);
+                height: 30%;
+            }
+            #controls > div {
+                @apply(--layout-horizontal);
+                padding-bottom: 1em;
+            }
+            #state {
+                margin-left: 16px;
+            }
+            #player {
+                height: 70%;
+            }
+        </style>
+
+        <p>player</p>
+        <script>
+            Polymer({
+                is: 'video-viewer',
+                properties: {
+                    route: {
+                        type: Object,
+                        notify: true
+                    },
+                }
+
+            });
+        </script>
+    </template>
+</dom-module>
+<!-- /#video-viewer -->

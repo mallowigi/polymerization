@@ -70,7 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         </style>
 
-        <app-location route="{{route}}"></app-location>
+        <app-location route="{{route}}" use-hash-as-path></app-location>
         <app-route
                 route="{{route}}"
                 pattern="/:page"
@@ -101,8 +101,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </app-header>
 
                 <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-                    <dashboard-page name="dashboard"></dashboard-page>
-                    <youtube-page name="youtube"></youtube-page>
+                    <dashboard-page name="dashboard" route="{{ subroute }}"></dashboard-page>
+                    <youtube-page name="youtube" route="{{ subroute }}"></youtube-page>
                 </iron-pages>
 
             </app-header-layout>

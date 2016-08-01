@@ -7,8 +7,15 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
+<script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+
+<link rel="import" href="youtube/youtube-search.html">
+<link rel="import" href="youtube/youtube-toolbar.html">
+<link rel="import" href="youtube/search-results.html">
 
 <dom-module id="youtube-page">
 
@@ -22,23 +29,123 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 @apply(--paper-font-common-base);
             }
 
+            :host([video-page-active]) {
+                overflow: hidden;
+            }
+
+            :host([video-page-active]) iron-pages {
+                transform: translateY(-170px);
+            }
+
+            iron-pages {
+                transition: transform 0.3s;
+            }
+
         </style>
-        <app-location route="{{route}}" use-hash-as-path></app-location>
+        <app-location route="{{route}}"></app-location>
 
-        <app-route route="{{route}}" pattern="/youtube/:video" data="{{data}}"></app-route>
-        <!--<app-route route="{{route}}" pattern="/search" tail="{{searchTail}}"></app-route>-->
-        <!--<app-route route="{{route}}" pattern="/video" tail="{{videoTail}}" active="{{videoPageActive}}"></app-route>-->
+        <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
+        <app-route route="{{route}}" pattern="/search" tail="{{searchTail}}"></app-route>
+        <app-route route="{{route}}" pattern="/video" tail="{{videoTail}}" active="{{videoPageActive}}"></app-route>
+        <h1>Youtube</h1>
 
+        <youtube-toolbar collapsed$="{{videoPageActive}}">
+            <!-- The youtube-search has a app-route that consumes the tail of
+            another route (`searchTail`) -->
+            <!--Bind videoData from the youtubeSearch-->
+            <youtube-search
+                    route="{{searchTail}}"
+                    video-data="{{videoData}}">
+            </youtube-search>
+
+        </youtube-toolbar>
+
+        <iron-pages attr-for-selected="id" selected="{{data.page}}">
+            <search-results id="search" items="{{videos}}"></search-results>
+
+            <!-- The video-viewer has a app-route that consumes the tail of
+            another route -->
+            <video-viewer id="video" route="{{videoTail}}"></video-viewer>
+        </iron-pages>
     </template>
 
     <script>
-        Polymer({
-            is: 'youtube-page',
-            properties: {
-                route: Object
-            }
-        });
+        window.addEventListener('WebComponentsReady', function() {
+            Polymer({
+                is: 'youtube-page',
+                properties: {
+                    route: {
+                        type: Object
+                    },
+                    videoPageActive: {
+                        type: Object,
+                        observer: '_videoPageActiveChanged'
+                    },
+                    videoData: {
+                        type: Object,
+                        observer: '_videoDataChanged'
+                    },
+                    searchTail: {
+                        type: Object,
+                        notify: true
+                    },
+                    videoTail: {
+                        type: Object,
+                        notify: true
+                    },
+                    newCategory: {
+                        type: String
+                    },
+                    videos: {
+                        type: Array,
+                        value: function() {
+                            return [];
+                        }
+                    },
+                    data: {
+                        type: Object,
+                        value: function() {
+                            return {
+                                page: '/search/'
+                            };
+                        }
+                    }
+                },
+                observers: [
+                    '_routeChanged(route.path)'
+                ],
 
+                _routeChanged (path) {
+                    if (!path) {
+                        this.set('route.path', '/search/');
+                    }
+                },
+
+                _videoDataChanged (data) {
+                    let videos = data.items.map((videoItem) => {
+                        return {
+                            id: videoItem.id.videoId,
+                            title: videoItem.snippet.title,
+                            description: videoItem.snippet.description,
+                            thumbnail: videoItem.snippet.thumbnails.high.url
+                        }
+                    });
+
+                    this.set('videos', videos)
+                },
+
+                _videoPageActiveChanged (videoPageActive, previousValue) {
+                    // change color of page on page change
+                    let newColor = videoPageActive ? 0 : 255;
+                    document.body.style.backgroundColor = `rgb(${newColor},${newColor},${newColor})`;
+
+                    if (previousValue === undefined) {
+                        document.body.style.transition = 'background-color .2s linear';
+                        return;
+                    }
+                }
+            });
+        });
     </script>
 
 </dom-module>
