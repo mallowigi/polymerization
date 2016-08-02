@@ -16,6 +16,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="youtube/youtube-search.html">
 <link rel="import" href="youtube/youtube-toolbar.html">
 <link rel="import" href="youtube/search-results.html">
+<link rel="import" href="youtube/video-viewer.html">
 
 <dom-module id="youtube-page">
 
@@ -135,14 +136,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 },
 
                 _videoPageActiveChanged (videoPageActive, previousValue) {
-                    // change color of page on page change
-                    let newColor = videoPageActive ? 0 : 255;
-                    document.body.style.backgroundColor = `rgb(${newColor},${newColor},${newColor})`;
 
-                    if (previousValue === undefined) {
-                        document.body.style.transition = 'background-color .2s linear';
-                        return;
-                    }
                 }
             });
         });

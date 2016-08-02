@@ -83,9 +83,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <app-drawer>
                 <div style="height: 100%; overflow: auto;">
                     <app-toolbar>Menu</app-toolbar>
-                    <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-                        <a name="dashboard-page" href="/dashboard">Dashboard</a>
-                        <a name="youtube-page" href="/youtube">Youtube</a>
+                    <iron-selector selected="{{ routeData.page }}" attr-for-selected="name" class="drawer-list" role="navigation">
+                        <a name="dashboard" href="#/dashboard">Dashboard</a>
+                        <a name="youtube" href="#/youtube">Youtube</a>
                     </iron-selector>
                 </div>
             </app-drawer>
@@ -100,7 +100,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </app-toolbar>
                 </app-header>
 
-                <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
+                <iron-pages role="main" selected="{{ routeData.page }}" attr-for-selected="name">
                     <dashboard-page name="dashboard" route="{{ subroute }}"></dashboard-page>
                     <youtube-page name="youtube" route="{{ subroute }}"></youtube-page>
                 </iron-pages>
@@ -114,24 +114,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script>
 
         Polymer({
-
             is: 'my-app',
-
             properties: {
-
                 page: {
                     type: String,
                     reflectToAttribute: true
                 },
-
+                routeData: {
+                    type: Object,
+                    value () {
+                        return {
+                            page: '/dashboard'
+                        }
+                    }
+                }
             },
 
             observers: [
-                '_routePageChanged(routeData.page)'
+                '_routeChanged(route.path)'
             ],
 
-            _routePageChanged: function (page) {
-                this.page = page || 'view1';
+            _routeChanged (path) {
+                if (!path) {
+                    this.set('route.path', '/dashboard');
+                }
             },
 
 

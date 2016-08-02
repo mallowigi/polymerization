@@ -6,6 +6,8 @@
 
 <link rel="import" href="../../../bower_components/app-route/app-route.html">
 
+<link rel="import" href="video-player.html">
+
 <dom-module id="video-viewer">
     <template>
         <style>
@@ -38,7 +40,12 @@
             }
         </style>
 
-        <p>player</p>
+        <!-- Listen to route changes from the youtube router, this time for the video hash -->
+        <app-route route="{{ route }}" pattern="/:vid" data="{{ data }}"></app-route>
+
+        Hello player
+        <video-player id="player" video-id="{{ data.vid }}"></video-player>
+
         <script>
             Polymer({
                 is: 'video-viewer',
@@ -47,6 +54,9 @@
                         type: Object,
                         notify: true
                     },
+                    data: {
+                        type: Object
+                    }
                 }
 
             });

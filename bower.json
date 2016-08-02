@@ -19,7 +19,8 @@
     "paper-input": "~1.1.16",
     "iron-ajax": "~1.4.3",
     "paper-card": "PolymerElements/paper-card#^1.1.1",
-    "paper-toggle-button": "polymerelements/paper-toggle-button#^v1.0.0"
+    "paper-toggle-button": "polymerelements/paper-toggle-button#^v1.0.0",
+    "google-youtube": "~1.2.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
